@@ -52,6 +52,7 @@ public class Oauth2AccessTokenFastJsonSerializer implements ObjectSerializer {
 
     public static final Oauth2AccessTokenFastJsonSerializer INSTANCE = new Oauth2AccessTokenFastJsonSerializer();
 
+
     @Override
     public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType, int features) throws IOException {
         SerializeWriter out = serializer.out;
