@@ -1,0 +1,47 @@
+server:
+  port: 8888
+
+spring:
+  ## redis 配置
+  redis:
+    host: 192.168.100.130
+    port: 6379
+    database: 15
+    timeout: 1000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 10
+        min-idle: 10
+        max-wait: 100
+        ## 空闲对象驱逐线程的运行间隔时间，正数则是线程运行间隔时间
+        time-between-eviction-runs: 3600s
+
+  ## mysql 配置
+  datasource:
+    url: jdbc:mysql://192.168.100.130:3306/oauth-study?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  ## jackson2 配置
+  jackson:
+    default-property-inclusion: use_defaults
+
+  ## mybatis-plus 日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+
+################# 以下为自定义配置信息 ########################
+cm:
+  ## 全局配置信息
+  global:
+    ## 全局消息序列化器，默认设置为 fastjson
+    ## 可选 fastjson / jackson2 请参考 SystemConstant 内
+    converter: fastjson
+    ## 全局时间处理格式，默认 yyyy-MM-dd HH:mm:ss，
+    ## 可选请参考 TimeUtils 内定义完毕的
+    formatter: yyyy-MM-dd HH:mm:ss

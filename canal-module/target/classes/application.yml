@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  redis:
+    host: 192.168.100.130
+    port: 6379
+  rabbitmq:
+    host: 192.168.100.130
+    port: 5672
+    username: admin
+    password: admin
+
+canal:
+  destination: example
+  server: 192.168.100.130:11111
+
+
+logging:
+  #pattern:
+    # console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"
+  level:
+    com:
+      atguigu: trace
+    root: INFO
