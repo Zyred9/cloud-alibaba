@@ -37,11 +37,11 @@ import java.util.Set;
  *
  * Jackson2 格式： Oauth2AccessTokenJackson2Serializer
  * {
- *         "access_token": "b80a66e3-6fa8-4f18-9a73-756afd19b817",
- *         "refresh_token": "f75f435c-980e-4b18-a03c-ad1f490f0e65",
- *         "scope": "all",
- *         "token_type": "bearer",
- *         "expires_in": 179998
+ *         "access_token": "b80a66e3-6fa8-4f18-9a73-756afd19b817",
+ *          "refresh_token": "f75f435c-980e-4b18-a03c-ad1f490f0e65",
+ *          "scope": "all",
+ *          "token_type": "bearer",
+ *          "expires_in": 179998
  * }
  *
  *
@@ -57,11 +57,26 @@ public class Oauth2AccessTokenFastJsonSerializer implements ObjectSerializer {
         SerializeWriter out = serializer.out;
         Map<String, Object> token = this.fastJsonSerializerOAuth2Token((OAuth2AccessToken)object);
 
+        // 最终使用 FastJson 把核心方法返回的结果进行转字符串处理
         String strToken = JSONObject.toJSONString(token);
 
-        out.write(strToken);
+        out.writeString(strToken);
     }
 
+    /**
+     * 序列化核心逻辑，主要是通过 OAuth2AccessToken 获取里面包含的所有可用属性
+     * 然后将其转换为 HashMap，最终返回到 write 方法中，进行对外序列化
+     *
+     * @param token     Oauth2 登录成功颁发的 token
+     * @return
+     * {
+     *       "access_token": "b80a66e3-6fa8-4f18-9a73-756afd19b817",
+     *        "refresh_token": "f75f435c-980e-4b18-a03c-ad1f490f0e65",
+     *        "scope": "all",
+     *        "token_type": "bearer",
+     *        "expires_in": 179998
+     *  }
+     */
     private Map<String, Object> fastJsonSerializerOAuth2Token(OAuth2AccessToken token) {
         Map<String, Object> tokenMap = new HashMap<>();
 

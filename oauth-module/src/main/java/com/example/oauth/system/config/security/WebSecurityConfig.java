@@ -1,6 +1,6 @@
 package com.example.oauth.system.config.security;
 
-import com.example.oauth.business.service.impl.UserDetailsServiceImpl;
+import com.example.oauth.system.config.security.service.UserDetailsServiceImpl;
 import com.example.oauth.system.provider.UserNameAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,11 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.userDetailsService)
-                .passwordEncoder(this.passwordEncoder);
+        auth
                 // 密码处理
-//                .and()
-//                .authenticationProvider(userNameAuthenticationProvider);
+                .authenticationProvider(userNameAuthenticationProvider);
     }
 
 

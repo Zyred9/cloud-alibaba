@@ -44,8 +44,8 @@ public class GlobalFastJsonHttpMessageConvertConfiguration implements WebMvcConf
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.clear();
-//        converters.removeIf(convert -> convert instanceof FastJsonHttpMessageConverter);
-//        converters.removeIf(convert -> convert instanceof MappingJackson2HttpMessageConverter);
+        // converters.removeIf(convert -> convert instanceof FastJsonHttpMessageConverter);
+        // converters.removeIf(convert -> convert instanceof MappingJackson2HttpMessageConverter);
         converters.add(this.fastJsonHttpMessageConvert());
     }
 
@@ -73,11 +73,14 @@ public class GlobalFastJsonHttpMessageConvertConfiguration implements WebMvcConf
         fc.setSupportedMediaTypes(mediaTypeList);
         fc.setFastJsonConfig(fjc);
 
-
         return fc;
     }
 
-
+    /**
+     * 注册针对不同类型的 java bean 进行序列化
+     *
+     * @param config    FastJson 核心配置类
+     */
     private void setSerializeConfig (SerializeConfig config) {
         // 针对 OAuth2AccessToken 自定义的序列化器
         config.put(DefaultOAuth2AccessToken.class, Oauth2AccessTokenFastJsonSerializer.INSTANCE);

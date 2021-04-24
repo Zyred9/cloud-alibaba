@@ -19,7 +19,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Override
     public Member getMember(String userName) {
         LambdaQueryWrapper<Member> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(Member::getUsername, userName);
+        wrapper.eq(Member::getMemberName, userName);
         Member one = this.baseMapper.selectOne(wrapper);
 
         if (Objects.isNull(one)) {

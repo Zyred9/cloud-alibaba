@@ -1,6 +1,6 @@
 package com.example.oauth.system.provider;
 
-import com.example.oauth.business.service.impl.UserDetailsServiceImpl;
+import com.example.oauth.system.config.security.service.UserDetailsServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,10 @@ import java.util.Collection;
 /**
  * <p>
  *          用户登录，密码认证
+ *
+ *      逻辑描述:
+ *
+ *
  * </p>
  *
  * @author zyred
@@ -42,7 +46,7 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("密码码不可以为空");
         }
         //获取用户信息
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        UserDetails user = this.userDetailsService.loadUserByUsername(username);
         //比较前端传入的密码明文和数据库中加密的密码是否相等
         if (!passwordEncoder.matches(password, user.getPassword())) {
             //发布密码不正确事件

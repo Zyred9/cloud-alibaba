@@ -1,7 +1,8 @@
 package com.example.oauth.system.config.security;
 
-import com.example.oauth.comm.rest.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -9,35 +10,30 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
-import javax.annotation.Resource;
-
 /**
  * <p>
- * oauth2.0配置文件
+ *      oauth2.0配置文件
  * </p>
  *
  * @author zyred
  * @since v 0.1
  **/
 @Configuration
+@ConditionalOnBean(OAuth2AutoConfiguration.class)
 public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     /** 存储token，使用redis **/
     @Autowired private RedisConnectionFactory redisConnectionFactory;
-    /** 密碼服務 **/
+    /** 密码服务 **/
     @Autowired @Lazy private PasswordEncoder passwordEncoder;
     /** 授权认证器 **/
     @Autowired private AuthenticationManager authenticationManager;
-    /** Oauth2 异常信息拦截处理器 **/
-    @Autowired private Oauth2WebResponseExceptionTranslator oauth2WebResponseExceptionTranslator;
 
 
     @Bean
@@ -110,8 +106,8 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(this.tokenStore())
                 // 密码认证授权，必须要授权认证管理器
-                .authenticationManager(authenticationManager);
-
-        endpoints.exceptionTranslator(this.oauth2WebResponseExceptionTranslator);
+                .authenticationManager(this.authenticationManager);
+        // 配置自定义异常转换器，在 Oauth2 中，异常不会被全局异常拦截，而是直接返回当前异常信息
+        endpoints.exceptionTranslator(new Oauth2WebResponseExceptionTranslator());
     }
 }

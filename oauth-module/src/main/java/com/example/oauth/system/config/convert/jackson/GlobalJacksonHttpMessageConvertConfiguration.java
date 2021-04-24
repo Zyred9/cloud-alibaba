@@ -2,6 +2,7 @@ package com.example.oauth.system.config.convert.jackson;
 
 import com.example.oauth.comm.constant.SystemConstant;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
@@ -15,7 +16,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
@@ -38,7 +38,14 @@ import java.util.*;
 
 /**
  * <p>
- * 全局json序列化器 jackson2
+ *      全局json序列化器 jackson2
+ *
+ *      jackson2 有一个缺点：
+ *          如果 Java Bean 内所包含的类型是 Java 基本数据类型 (byte short int long float double boolean char)
+ *          那么，将会被正确序列化为默认的数据，但是如果是包装数据类型，则无法序列化为对应的基本数据类型的默认值
+ *       eg: int a;      ->  0
+ *           Integer b;  ->  null
+ *
  * </p>
  *
  * @author zyred
@@ -193,9 +200,7 @@ public class GlobalJacksonHttpMessageConvertConfiguration extends WebMvcConfigur
             return;
         }
 
-        if (clazz == Integer.class || clazz == Long.class
-                || clazz == Double.class || clazz == Float.class
-                || clazz == Byte.class || clazz == Short.class) {
+        if (clazz == Number.class) {
             gen.writeNumber(0);
             return;
         }

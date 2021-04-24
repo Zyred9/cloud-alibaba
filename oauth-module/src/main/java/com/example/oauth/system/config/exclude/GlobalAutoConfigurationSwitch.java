@@ -168,6 +168,6 @@ public class GlobalAutoConfigurationSwitch extends AutoConfigurationSwitchSuppor
         }
         // before : ,"1","2"
         // after  :  "1","2"
-        return builder.toString().substring(singleSize);
+        return builder.substring(singleSize);
     }
 }

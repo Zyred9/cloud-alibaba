@@ -9,6 +9,7 @@
     <modules>
         <module>canal-module</module>
         <module>oauth-module</module>
+        <module>link-module</module>
     </modules>
     <name>cloud-alibaba</name>
     <description>cloud-alibaba</description>

@@ -1,5 +1,6 @@
 package com.example.oauth.system.config.security;
 
+import com.example.oauth.comm.rest.RestResult;
 import com.example.oauth.comm.rest.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,6 @@ import org.springframework.security.web.util.ThrowableAnalyzer;
  * 在该类中，主要是完成了 Oauth2 异常返回信息的包装，封装为此项目中通用的格式
  */
 @Slf4j
-@Configuration
 public class Oauth2WebResponseExceptionTranslator implements WebResponseExceptionTranslator {
 
     private final ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
@@ -36,7 +36,7 @@ public class Oauth2WebResponseExceptionTranslator implements WebResponseExceptio
 
 
     @Override
-    public ResponseEntity translate(Exception e) {
+    public ResponseEntity<RestResult> translate(Exception e) {
 
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
 
@@ -54,8 +54,11 @@ public class Oauth2WebResponseExceptionTranslator implements WebResponseExceptio
 
     /**
      * 处理认证异常
+     *
+     * @param e
+     * @return
      */
-    private ResponseEntity handleOauth2Exception(OAuth2Exception e) {
+    private ResponseEntity<RestResult> handleOauth2Exception(OAuth2Exception e) {
 
         int status = e.getHttpErrorCode();
         HttpHeaders headers = new HttpHeaders();
