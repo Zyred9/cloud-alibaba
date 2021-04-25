@@ -1,0 +1,8 @@
+## true: 关闭该模块的自动配置
+## false: 开启模块自动配置
+cm:
+ module:
+  enable:
+   redis: false
+   rabbitMq: true
+   aop: false
