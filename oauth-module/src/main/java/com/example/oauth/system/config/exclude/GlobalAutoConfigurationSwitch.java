@@ -17,7 +17,7 @@ import java.util.*;
  *     本类主要实现的功能如下:
  *     boot 项目启动加载 spring.factories 配置文件阶段，会来执行该类，因为在该项目 META-INF/spring.factories 中，配置了
  *     org.springframework.boot.env.EnvironmentPostProcessor={@code this.getClass().getName}，在该类中，主要是完成
- *     classpath:autoExcludeConfig.properties 文件的读取和解析，当 prefix=cm.module.enable 的 key 设置为 false 的情况
+ *     classpath:autoExcludeConfig.yml 文件的读取和解析，当 prefix=cm.module.enable 的 key 设置为 false 的情况
  *     则表示该模块对应的自动配置类将会在 springboot 中被排除加载
  *
  *     eg: cm.module.enable.redis=false，那么本项目中 Redis 的配置将不会生效，也就是本项目中不会使用该中间件
@@ -31,6 +31,7 @@ import java.util.*;
  * @author zyred
  * @since v 0.1
  **/
+@Slf4j
 public class GlobalAutoConfigurationSwitch extends AutoConfigurationSwitchSupport implements EnvironmentPostProcessor {
 
     /**
@@ -58,7 +59,7 @@ public class GlobalAutoConfigurationSwitch extends AutoConfigurationSwitchSuppor
     private static final List<String> excludeContainer = new ArrayList<>();
 
     /** 读取配置文件到本类中 **/
-    private final String[] profiles = { "autoExcludeConfig.properties" };
+    private final String[] profiles = { "autoExcludeConfig.yml" };
 
     /** 将 properties 文件转换为此对象，方便存取 **/
     private final Properties properties = new Properties();
@@ -168,6 +169,12 @@ public class GlobalAutoConfigurationSwitch extends AutoConfigurationSwitchSuppor
         }
         // before : ,"1","2"
         // after  :  "1","2"
-        return builder.substring(singleSize);
+        String excludes = builder.substring(singleSize);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Excluded components with: {}", excludes);
+        }
+
+        return excludes;
     }
 }
