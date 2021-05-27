@@ -1,6 +1,7 @@
 package com.example.oauth.system.config.exclude;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;

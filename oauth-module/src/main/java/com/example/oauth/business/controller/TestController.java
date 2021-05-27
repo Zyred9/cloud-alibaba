@@ -24,6 +24,7 @@ public class TestController {
     @Autowired
     MyEventPublisher eventPublisher;
 
+
     @GetMapping("/json")
     public RestResult getJson () {
         return ResultUtils.success(TestEntity.getInstance());
@@ -33,4 +34,5 @@ public class TestController {
     public void publisher () {
         this.eventPublisher.publishEvent("下班事件!");
     }
+
 }

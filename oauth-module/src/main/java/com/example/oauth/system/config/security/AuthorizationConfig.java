@@ -1,14 +1,11 @@
 package com.example.oauth.system.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -25,7 +22,6 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
  * @since v 0.1
  **/
 @Configuration
-@ConditionalOnBean(OAuth2AutoConfiguration.class)
 public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     /** 存储token，使用redis **/
@@ -41,10 +37,6 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
         return new RedisTokenStore(this.redisConnectionFactory);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     /**
      * 配置三方应用，如果不配置三方应用信息，将无法正常使用

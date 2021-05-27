@@ -1,15 +1,19 @@
 package com.example.oauth.system.config.security;
 
-import com.example.oauth.system.config.security.service.UserDetailsServiceImpl;
-import com.example.oauth.system.provider.UserNameAuthenticationProvider;
+import com.example.oauth.system.annotation.SubAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -22,9 +26,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired private UserDetailsServiceImpl userDetailsService;
-    @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private UserNameAuthenticationProvider userNameAuthenticationProvider;
+    @SubAuthenticationProvider
+    @Autowired private final List<AuthenticationProvider> providers = Collections.emptyList();
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,10 +44,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                // 密码处理
-                .authenticationProvider(userNameAuthenticationProvider);
+    protected void configure(AuthenticationManagerBuilder auth) {
+
+        this.providers.forEach(auth::authenticationProvider);
+
+//        auth
+//                // 密码处理
+//                .authenticationProvider(userNameAuthenticationProvider);
     }
 
 

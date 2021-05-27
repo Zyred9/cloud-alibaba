@@ -21,7 +21,7 @@ import org.springframework.security.web.util.ThrowableAnalyzer;
  * 在该类中，主要是完成了 Oauth2 异常返回信息的包装，封装为此项目中通用的格式
  */
 @Slf4j
-public class Oauth2WebResponseExceptionTranslator implements WebResponseExceptionTranslator {
+public class Oauth2WebResponseExceptionTranslator implements WebResponseExceptionTranslator<OAuth2Exception> {
 
     private final ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
@@ -36,7 +36,7 @@ public class Oauth2WebResponseExceptionTranslator implements WebResponseExceptio
 
 
     @Override
-    public ResponseEntity<RestResult> translate(Exception e) {
+    public ResponseEntity translate(Exception e) {
 
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
 

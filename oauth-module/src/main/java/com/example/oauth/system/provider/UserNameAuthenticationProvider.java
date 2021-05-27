@@ -1,5 +1,6 @@
 package com.example.oauth.system.provider;
 
+import com.example.oauth.system.annotation.SubAuthenticationProvider;
 import com.example.oauth.system.config.security.service.UserDetailsServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import java.util.Collection;
  * @since v 0.1
  **/
 @Configuration
+@SubAuthenticationProvider
 public class UserNameAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired private UserDetailsServiceImpl userDetailsService;
