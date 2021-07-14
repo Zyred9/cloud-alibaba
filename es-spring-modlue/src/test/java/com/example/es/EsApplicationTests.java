@@ -1,8 +1,10 @@
 package com.example.es;
 
-import com.example.es.dao.ProductDao;
 import com.example.es.entity.Product;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,6 @@ import java.util.List;
 @SpringBootTest
 class EsApplicationTests {
 
-    @Autowired private ProductDao product;
     @Autowired private ElasticsearchRestTemplate restTemplate;
 
     @Test
@@ -43,7 +44,7 @@ class EsApplicationTests {
                 .setCategory("手机")
                 .setPrice(2999.00)
                 .setImage("www.baidu.com/img/flexible/logo/pc/result.png");
-        this.product.save(p);
+        this.restTemplate.save(p);
     }
 
     @Test
@@ -58,7 +59,7 @@ class EsApplicationTests {
                     .setPrice(2999.00 * i)
                     .setImage("www.baidu.com/img/flexible/logo/pc/result.png"));
         }
-        this.product.saveAll(ps);
+        this.restTemplate.save(ps);
     }
 
     @Test
