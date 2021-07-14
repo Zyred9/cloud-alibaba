@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: es-spring
+server:
+  port: 8088
+
+elasticsearch:
+  port: 9200
+  host: localhost
+
+logging:
+  level:
+    com:
+      example: debug
+
