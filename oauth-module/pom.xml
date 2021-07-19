@@ -11,6 +11,7 @@
 
     <artifactId>oauth-module</artifactId>
 
+
     <dependencies>
 
         <dependency>
