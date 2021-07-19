@@ -1,0 +1,10 @@
+# 应用名称
+spring:
+  application:
+    name: mongo
+  data:
+    mongodb:
+      database: articledb
+      host: localhost
+      port: 27017
+
